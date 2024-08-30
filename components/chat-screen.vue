@@ -9,7 +9,7 @@
       @sessionSelected="selectSession"
     />
     <div class="chatscreen">
-      <div className="min-h-[90vh]  p-[30px]">
+      <div className=" ">
         <div
           v-for="(message, index) in messages"
           :key="index"
@@ -91,7 +91,7 @@
           </button>
         </div>
       </div>
-
+      <div></div>
       <div class="input">
         <div class="input-zone">
           <input
@@ -100,10 +100,10 @@
             rows="90"
             class="input_textbox"
             placeholder="Input your question here"
-            @keyup.enter="search(newMessage), saveMessage()"
+            @keyup.enter="search(newMessage, true)"
           />
         </div>
-        <button class="input_button" @click="search(newMessage), saveMessage()">
+        <button class="input_button" @click="search(newMessage, true)">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="1em"
@@ -126,47 +126,38 @@
 import { defineComponent, onMounted, ref, provide } from "vue";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/vue";
-
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css/pagination";
 import HistorySidebar from "./history-sidebar.vue";
-
 import { useChatSession } from "~/composables/useChatSession";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 
 const { sessions, saveSession, loadSession } = useChatSession();
-const currentSessionId = ref(uuidv4());
-
+// const currentSessionId = ref(uuidv4());
 const newMessage = ref("");
 const messages = ref([]);
-
 const platformChoiceOption = ref([]);
 const playerChoiceOption = ref([]);
 const searchChoiceOption = ref(["ErrCode", "ErrMessage", "Cause"]);
-
 let data;
 let responseList = [];
 let FilteredData;
 let searchProperties = "empty";
-
 const config = useRuntimeConfig();
-
 const isLoading = ref(true);
 let step = 1;
-
 let filteringArray = ref([]);
-
-let currentSession = ref(
-  loadSession(currentSessionId.value) || {
-    id: currentSessionId.value,
-    messages: [],
-    state: 1,
-    date: new Date().toISOString(),
-    filteringArray: [],
-  }
-);
+let currentSession = ref({
+  errCode: "",
+  errMessage: "",
+  cause: "",
+  state: 4,
+  date: new Date().toISOString(),
+  numberOfSearch: 1,
+  filteringArray: [],
+});
 
 defineComponent({
   name: "CibTelegramPlane",
@@ -188,7 +179,6 @@ onMounted(async () => {
 onMounted(() => {
   sendMessage("", "Xin chào, hôm nay tôi có thể giúp gì cho bạn?");
 
-  console.log(sessions.value[0]);
   scrollToBottom();
 });
 
@@ -200,45 +190,80 @@ const clearChat = () => {
 
 provide("clearChat", clearChat);
 
-const saveMessage = () => {
-  const existingSessionIndex = sessions.value.findIndex(
-    (session) => session.id === currentSession.value.id
-  );
+const saveMessage = (errCode, errMessage, cause) => {
+  currentSession.value = {};
 
-  currentSession.value.messages.push(messages);
-  currentSession.value.state = step;
+  currentSession.value.errCode = errCode;
+
+  currentSession.value.errMessage = errMessage;
+
+  currentSession.value.cause = cause;
+
+  console.log(errCode, errMessage, cause);
+
   currentSession.value.date = formatDateTime(new Date().toISOString());
+  currentSession.value.state = 4;
+  currentSession.value.numberOfSearch = 1;
+  currentSession.value.filteringArray = filteringArray;
 
-  console.log(existingSessionIndex);
+  const existingSessionIndex = sessions.value.findIndex((session) => {
+    if (session.errCode !== undefined) {
+      return JSON.stringify(session.errCode) === JSON.stringify(errCode);
+    } else if (session.errMessage !== undefined) {
+      return JSON.stringify(session.errMessage) === JSON.stringify(errMessage);
+    } else {
+      return JSON.stringify(session.cause) === JSON.stringify(cause);
+    }
+  });
+
   if (existingSessionIndex >= 0) {
     let chatSessions = JSON.parse(localStorage.getItem("chatSessions")) || [];
-    chatSessions[existingSessionIndex] = currentSession.value;
+    chatSessions[existingSessionIndex].date = currentSession.value.date;
+    chatSessions[existingSessionIndex].numberOfSearch++;
+
     localStorage.setItem("chatSessions", JSON.stringify(chatSessions));
   } else {
-    currentSession.value.filteringArray = filteringArray.value;
     saveSession(currentSession.value);
+    console.log(currentSession.value);
   }
-
-  filteringArray.value = [];
 };
-provide("saveMessage", saveMessage);
 
-function selectSession(sessionId) {
-  currentSession.value = loadSession(sessionId) || { messages: [] };
+function selectSession(errCode, errMessage, cause) {
+  currentSession.value = loadSession(errCode, errMessage, cause) || {
+    messages: [],
+  };
+  console.log(currentSession.value);
 
-  messages.value = currentSession.value.messages[0]._value;
   step = currentSession.value.state;
-  if (currentSession.value.filteringArray[1] !== "") {
-    filterByPlatform(currentSession.value.filteringArray[0], false);
-    filterByPlayer(currentSession.value.filteringArray[1], false);
-  }
-  if (currentSession.value.filteringArray[2] !== "") {
-    filteredByProperties(currentSession.value.filteringArray[2], false);
+
+  filterByPlatform(currentSession.value.filteringArray[0], false);
+  filterByPlayer(currentSession.value.filteringArray[1], false);
+
+  filteredByProperties(currentSession.value.filteringArray[2], false);
+
+  // if (errCode !== "") {
+  //   console.log("Search By ErrCode");
+  //   console.log(errCode);
+  //   search(errCode, false);
+  // } else if (errMessage !== "") {
+  //   console.log("Search By ErrMessage");
+
+  //   console.log(errMessage);
+  //   search(errMessage, false);
+  // } else {
+  //   console.log("Search By Cause");
+  //   console.log(cause);
+  //   search(cause, false);
+  // }
+
+  if (searchProperties === "ErrCode") {
+    search(errCode, false);
+  } else if (searchProperties === "ErrMessage") {
+    search(errMessage, false);
+  } else {
+    search(cause, false);
   }
   filteringArray.value = [];
-
-  console.log(currentSession.value);
-  console.log("Sessions", sessions);
 }
 
 function formatDateTime(isoString) {
@@ -268,22 +293,31 @@ const filterByPlatform = (platForm, flag) => {
   );
   playerChoiceOption.value = [...new Set(player)];
 
-  playerChoiceOption.value = playerChoiceOption.value.map((player) =>
-    player
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ")
-  );
+  playerChoiceOption.value = playerChoiceOption.value.map((player) => {
+    if (player !== "") {
+      return player
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    } else {
+      return "Không có";
+    }
+  });
   if (flag === true) {
     sendMessage(platForm, "Bạn đang tìm thông tin trên Player nào vậy?");
   }
   step = 2;
   filteringArray.value.push(platForm);
   console.log(FilteredData, platForm, filteringArray.value);
-  scrollToBottom();
+  nextTick(() => {
+    scrollToBottom();
+  });
 };
 
 const filterByPlayer = (player, flag) => {
+  if (player === "Không có") {
+    player = "";
+  }
   FilteredData = FilteredData.filter((item) => {
     if (item.Player !== undefined) {
       return item.Player.toLowerCase().includes(player.toLowerCase());
@@ -296,7 +330,9 @@ const filterByPlayer = (player, flag) => {
   step = 3;
   filteringArray.value.push(player);
   console.log(FilteredData, player, filteringArray.value);
-  scrollToBottom();
+  nextTick(() => {
+    scrollToBottom();
+  });
 };
 const filteredByProperties = (searchBy, flag) => {
   if (flag === true) {
@@ -309,49 +345,65 @@ const filteredByProperties = (searchBy, flag) => {
   step = 4;
   filteringArray.value.push(searchBy);
   console.log(FilteredData, searchBy, filteringArray.value);
-  scrollToBottom();
+  nextTick(() => {
+    scrollToBottom();
+  });
 };
 
-const search = (searchString) => {
-  filteringArray.value.push(searchProperties);
+const search = (searchString, flag) => {
   let searchData = FilteredData;
+  console.log(searchProperties, newMessage);
   if (searchProperties === "empty") {
     sendMessage(
-      newMessage,
+      newMessage.value,
       "Xin bạn vui lòng chọn Platform, Player và thông tin bạn muốn tìm kiếm trước"
     );
-  }
-  if (searchProperties === "ErrCode") {
-    searchData = searchData.filter((item) => {
-      if (item.ErrCode !== undefined) {
-        if (item.ErrCode.toLowerCase() === searchString.toLowerCase()) {
-          return true;
-        } else {
-          return item.ErrCode.toLowerCase().includes(
+  } else {
+    if (searchProperties === "ErrCode") {
+      searchData = searchData.filter((item) => {
+        if (item.ErrCode !== undefined) {
+          if (item.ErrCode.toLowerCase() === searchString.toLowerCase()) {
+            return true;
+          }
+        }
+        return false;
+      });
+    } else if (searchProperties === "ErrMessage") {
+      searchData = searchData.filter((item) => {
+        if (item.ErrMessage !== undefined) {
+          return item.ErrMessage.toLowerCase().includes(
             searchString.toLowerCase()
           );
         }
-      }
-      return false;
-    });
-  } else if (searchProperties === "ErrMessage") {
-    searchData = searchData.filter((item) => {
-      if (item.ErrMessage !== undefined) {
-        return item.ErrMessage.toLowerCase().includes(
-          searchString.toLowerCase()
+        return false;
+      });
+    } else if (searchProperties === "Cause") {
+      searchData = searchData.filter((item) => {
+        if (item.Cause !== undefined) {
+          return item.Cause.toLowerCase().includes(searchString.toLowerCase());
+        }
+        return false;
+      });
+    }
+    if (flag) {
+      for (let i = 0; i < searchData.length; i++) {
+        saveMessage(
+          searchData[i].ErrCode,
+          searchData[i].ErrMessage,
+          searchData[i].Cause
         );
       }
-      return false;
-    });
-  } else if (searchProperties === "Cause") {
-    searchData = searchData.filter((item) => {
-      if (item.Cause !== undefined) {
-        return item.Cause.toLowerCase().includes(searchString.toLowerCase());
-      }
-      return false;
-    });
+    }
+
+    respondFormatter(searchData);
   }
 
+  nextTick(() => {
+    scrollToBottom();
+  });
+};
+
+const respondFormatter = (searchData) => {
   const defaultValues = {
     Player: "Không có",
     ErrCode: "Không có",
@@ -366,7 +418,7 @@ const search = (searchString) => {
     const item = searchData[0];
 
     Object.keys(defaultValues).forEach((key) => {
-      if (item[key] === undefined) {
+      if (item[key] === undefined || item[key] === "") {
         item[key] = defaultValues[key];
       }
     });
@@ -375,7 +427,6 @@ const search = (searchString) => {
 
       responseList.push(resString);
     }
-    console.log(responseList);
 
     sendMessage(newMessage.value, responseList);
 
@@ -383,11 +434,6 @@ const search = (searchString) => {
   } else {
     sendMessage(newMessage.value, "Sorry, I don't understand the question.");
   }
-  console.log(searchData);
-
-  nextTick(() => {
-    scrollToBottom();
-  });
 };
 
 const back = () => {
@@ -402,8 +448,6 @@ const sendMessage = (userMessage, botMessage) => {
 
   newMessage.value = "";
 };
-
-provide("sendMessage", sendMessage);
 
 const scrollContainer = ref(null);
 
@@ -431,7 +475,7 @@ const scrollToBottom = () => {
   display: flex;
   flex-direction: column;
   background-color: #bec7a5;
-
+  align-content: space-between;
   min-width: 50%;
   flex: auto;
 }
@@ -447,6 +491,8 @@ const scrollToBottom = () => {
   width: 100%;
   position: sticky;
   z-index: 10;
+  flex-grow: 0;
+  margin-top: auto;
 }
 
 .input_textbox {
