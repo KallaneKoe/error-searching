@@ -22,7 +22,7 @@
           </svg>
         </button>
         <h3 class="styledH3">Lịch sử Chat</h3>
-        <button title="Close Sidebar" @click="hideSidebar">
+        <button title="Close Sidebar" @click="toggleSidebar()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="1em"
@@ -114,7 +114,11 @@
     </div>
     <div class="closedSidebar">
       <div v-if="sidebar_visible === false" class="styledButtonContainers">
-        <button title="Open Sidebar" @click="hideSidebar" class="styledButton">
+        <button
+          title="Open Sidebar"
+          @click="toggleSidebar()"
+          class="styledButton"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="1em"
@@ -170,7 +174,7 @@
 import { inject } from "vue";
 
 import { defineProps, defineEmits } from "vue";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 
 const props = defineProps({
   sessions: Array,
@@ -180,36 +184,39 @@ defineOptions({
   inheritAttrs: false,
 });
 
-const windowWidth = ref(window.innerWidth);
-
 const emit = defineEmits(["sessionSelected"]);
 
 function selectSession(errCode, errMessage, cause) {
   emit("sessionSelected", errCode, errMessage, cause);
 }
+const windowWidth = ref(window.innerWidth);
 const sidebar_visible = ref(true);
+const sidebar_auto_hidden = ref(false);
+
 const handleResize = () => {
   windowWidth.value = window.innerWidth;
+  if (windowWidth.value < 920 && sidebar_visible.value) {
+    sidebar_visible.value = false;
+    sidebar_auto_hidden.value = true;
+  } else if (windowWidth.value >= 920 && sidebar_auto_hidden.value) {
+    sidebar_visible.value = true;
+    sidebar_auto_hidden.value = false;
+  }
 };
 
-onMounted(() => {
-  window.addEventListener("resize", handleResize);
-});
+const toggleSidebar = () => {
+  // Khi người dùng tự bật/tắt sidebar, reset trạng thái tự động ẩn
+  sidebar_auto_hidden.value = false;
+  sidebar_visible.value = !sidebar_visible.value;
+};
 
+// Gắn sự kiện resize
+window.addEventListener("resize", handleResize);
+
+// Xóa sự kiện resize khi component bị hủy
 onUnmounted(() => {
   window.removeEventListener("resize", handleResize);
 });
-watchEffect(() => {
-  if (windowWidth.value < 920 && sidebar_visible.value === true) {
-    hideSidebar();
-  } else if (windowWidth.value >= 920 && sidebar_visible.value === false) {
-    hideSidebar();
-  }
-});
-
-const hideSidebar = () => {
-  sidebar_visible.value = !sidebar_visible.value;
-};
 
 const clearChat = inject("clearChat");
 
@@ -224,17 +231,29 @@ function parseCustomDate(dateString) {
   return new Date(year, month - 1, day, hour, minute, second);
 }
 
+const sessions = ref(props.sessions); // Tạo một ref để chứa giá trị của props.sessions
+
 const sortedSessionsByDate = computed(() => {
-  return [...props.sessions].sort((a, b) => {
+  console.log("sortedSessionsByDate recomputed");
+  return [...sessions.value].sort((a, b) => {
     return parseCustomDate(b.date) - parseCustomDate(a.date);
   });
 });
 
 const sortedSessionsByPopular = computed(() => {
-  return [...props.sessions].sort((a, b) => {
+  console.log("sortedSessionsByPopular recomputed");
+  return [...sessions.value].sort((a, b) => {
     return b.numberOfSearch - a.numberOfSearch;
   });
 });
+
+watch(
+  () => props.sessions,
+  (newSessions) => {
+    console.log("Sessions changed:", newSessions);
+  },
+  { deep: true }
+);
 </script>
 
 <style>
