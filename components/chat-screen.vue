@@ -440,7 +440,9 @@ const back = () => {
   step = 1;
   FilteredData = data.data;
   filteringArray.value = [];
-  scrollToBottom();
+  nextTick(() => {
+    scrollToBottom();
+  });
 };
 
 const sendMessage = (userMessage, botMessage) => {
