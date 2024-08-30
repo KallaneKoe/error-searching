@@ -394,7 +394,7 @@ const search = (searchString, flag) => {
         );
       }
     }
-
+    filteringArray = [];
     respondFormatter(searchData);
   }
 
