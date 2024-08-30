@@ -210,10 +210,8 @@ const toggleSidebar = () => {
   sidebar_visible.value = !sidebar_visible.value;
 };
 
-// Gắn sự kiện resize
 window.addEventListener("resize", handleResize);
 
-// Xóa sự kiện resize khi component bị hủy
 onUnmounted(() => {
   window.removeEventListener("resize", handleResize);
 });
@@ -231,7 +229,7 @@ function parseCustomDate(dateString) {
   return new Date(year, month - 1, day, hour, minute, second);
 }
 
-const sessions = ref(props.sessions); // Tạo một ref để chứa giá trị của props.sessions
+const sessions = ref([...props.sessions]);
 
 const sortedSessionsByDate = computed(() => {
   console.log("sortedSessionsByDate recomputed");
