@@ -229,29 +229,19 @@ function parseCustomDate(dateString) {
   return new Date(year, month - 1, day, hour, minute, second);
 }
 
-const sessions = ref([...props.sessions]);
-
 const sortedSessionsByDate = computed(() => {
   console.log("sortedSessionsByDate recomputed");
-  return [...sessions.value].sort((a, b) => {
+  return [...props.sessions].sort((a, b) => {
     return parseCustomDate(b.date) - parseCustomDate(a.date);
   });
 });
 
 const sortedSessionsByPopular = computed(() => {
   console.log("sortedSessionsByPopular recomputed");
-  return [...sessions.value].sort((a, b) => {
+  return [...props.sessions].sort((a, b) => {
     return b.numberOfSearch - a.numberOfSearch;
   });
 });
-
-watch(
-  () => props.sessions,
-  (newSessions) => {
-    console.log("Sessions changed:", newSessions);
-  },
-  { deep: true }
-);
 </script>
 
 <style>

@@ -148,7 +148,7 @@ let searchProperties = "empty";
 const config = useRuntimeConfig();
 const isLoading = ref(true);
 let step = 1;
-let filteringArray = ref([]);
+let filterArray = [];
 let currentSession = ref({
   errCode: "",
   errMessage: "",
@@ -204,7 +204,12 @@ const saveMessage = (errCode, errMessage, cause) => {
   currentSession.value.date = formatDateTime(new Date().toISOString());
   currentSession.value.state = 4;
   currentSession.value.numberOfSearch = 1;
-  currentSession.value.filteringArray = filteringArray;
+
+  currentSession.value.filteringArray = filterArray;
+  console.log(
+    currentSession.value.errCode,
+    currentSession.value.filteringArray
+  );
 
   const existingSessionIndex = sessions.value.findIndex((session) => {
     if (session.errCode !== undefined) {
@@ -263,7 +268,7 @@ function selectSession(errCode, errMessage, cause) {
   } else {
     search(cause, false);
   }
-  filteringArray.value = [];
+  filterArray = [];
 }
 
 function formatDateTime(isoString) {
@@ -307,8 +312,8 @@ const filterByPlatform = (platForm, flag) => {
     sendMessage(platForm, "Bạn đang tìm thông tin trên Player nào vậy?");
   }
   step = 2;
-  filteringArray.value.push(platForm);
-  console.log(FilteredData, platForm, filteringArray.value);
+  filterArray.push(platForm);
+
   nextTick(() => {
     scrollToBottom();
   });
@@ -328,8 +333,8 @@ const filterByPlayer = (player, flag) => {
     sendMessage(player, "Bạn muốn tìm kiếm thông theo gì?");
   }
   step = 3;
-  filteringArray.value.push(player);
-  console.log(FilteredData, player, filteringArray.value);
+  filterArray.push(player);
+
   nextTick(() => {
     scrollToBottom();
   });
@@ -343,8 +348,8 @@ const filteredByProperties = (searchBy, flag) => {
   }
   searchProperties = searchBy;
   step = 4;
-  filteringArray.value.push(searchBy);
-  console.log(FilteredData, searchBy, filteringArray.value);
+  filterArray.push(searchBy);
+
   nextTick(() => {
     scrollToBottom();
   });
@@ -352,7 +357,7 @@ const filteredByProperties = (searchBy, flag) => {
 
 const search = (searchString, flag) => {
   let searchData = FilteredData;
-  console.log(searchProperties, newMessage);
+
   if (searchProperties === "empty") {
     sendMessage(
       newMessage.value,
@@ -394,7 +399,7 @@ const search = (searchString, flag) => {
         );
       }
     }
-    filteringArray = [];
+
     respondFormatter(searchData);
   }
 
@@ -439,7 +444,7 @@ const respondFormatter = (searchData) => {
 const back = () => {
   step = 1;
   FilteredData = data.data;
-  filteringArray.value = [];
+  filterArray = [];
   nextTick(() => {
     scrollToBottom();
   });
