@@ -191,7 +191,7 @@ function selectSession(errCode, errMessage, cause) {
 }
 const windowWidth = ref(window.innerWidth);
 
-const sidebar_visible = ref(true);
+const sidebar_visible = ref(false);
 const sidebar_auto_hidden = ref(false);
 
 const handleResize = () => {
@@ -245,7 +245,6 @@ const sortedSessionsByPopular = computed(() => {
 </script>
 
 <style>
-
 .allContainer {
   position: sticky;
   top: 0;
