@@ -189,12 +189,12 @@ const emit = defineEmits(["sessionSelected"]);
 function selectSession(errCode, errMessage, cause) {
   emit("sessionSelected", errCode, errMessage, cause);
 }
-const windowWidth = ref(window.innerWidth);
+const windowWidth = ref(screen.width);
 const sidebar_visible = ref(true);
 const sidebar_auto_hidden = ref(false);
 
 const handleResize = () => {
-  windowWidth.value = window.innerWidth;
+  windowWidth.value = screen.width;
   if (windowWidth.value < 920 && sidebar_visible.value) {
     sidebar_visible.value = false;
     sidebar_auto_hidden.value = true;
@@ -205,7 +205,6 @@ const handleResize = () => {
 };
 
 const toggleSidebar = () => {
-  // Khi người dùng tự bật/tắt sidebar, reset trạng thái tự động ẩn
   sidebar_auto_hidden.value = false;
   sidebar_visible.value = !sidebar_visible.value;
 };
