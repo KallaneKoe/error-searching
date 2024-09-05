@@ -585,7 +585,7 @@ const scrollToBottom = () => {
   position: fixed;
   top: 50%;
   left: 50%;
-  right: 50%;
+  margin: 0 auto;
 }
 
 @keyframes l3 {
