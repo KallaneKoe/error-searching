@@ -194,10 +194,6 @@ const windowWidth = ref(window.innerWidth);
 const sidebar_visible = ref(true);
 const sidebar_auto_hidden = ref(false);
 
-onMounted(() => {
-  window.addEventListener("resize", this.handleResize);
-});
-
 const handleResize = () => {
   windowWidth.value = window.innerWidth;
   if (windowWidth.value < 920 && sidebar_visible.value) {
