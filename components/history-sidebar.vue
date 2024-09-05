@@ -190,7 +190,7 @@ function selectSession(errCode, errMessage, cause) {
   emit("sessionSelected", errCode, errMessage, cause);
 }
 //const windowWidth = ref(window.innerWidth);
-const windowWidth = ref(window.matchMedia("(max-width: 768px)"));
+const windowWidth = ref(window.matchMedia("(max-width: 920px)"));
 const sidebar_visible = ref(true);
 const sidebar_auto_hidden = ref(false);
 
@@ -199,7 +199,7 @@ onMounted(() => {
 });
 
 const handleResize = () => {
-  windowWidth.value = window.matchMedia("(max-width: 768px)");
+  windowWidth.value = window.matchMedia("(max-width: 920px)");
   if (windowWidth.value < 920 && sidebar_visible.value) {
     sidebar_visible.value = false;
     sidebar_auto_hidden.value = true;
