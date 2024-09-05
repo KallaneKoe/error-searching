@@ -1,10 +1,10 @@
 <script setup lang="ts"></script>
 
 <template>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <div class="main-screen">
     <!-- <Header className="fixed bg-slate-50 w-[100vw] " /> -->
     <ChatScreen class="chat-screen" />
-
   </div>
 </template>
 
