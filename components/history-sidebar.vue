@@ -171,7 +171,7 @@
 </template>
 
 <script lang="js" setup>
-import { inject } from "vue";
+import { inject, onMounted } from "vue";
 
 import { defineProps, defineEmits } from "vue";
 import { ref, watch, computed } from "vue";
@@ -192,6 +192,10 @@ function selectSession(errCode, errMessage, cause) {
 const windowWidth = ref(window.innerWidth);
 const sidebar_visible = ref(true);
 const sidebar_auto_hidden = ref(false);
+
+onMounted(() => {
+  window.addEventListener("resize", this.handleResize);
+});
 
 const handleResize = () => {
   windowWidth.value = window.innerWidth;
@@ -244,12 +248,6 @@ const sortedSessionsByPopular = computed(() => {
 </script>
 
 <style>
-@media (max-width: 920px) {
-  .allContainer {
-    z-index: 1000;
-  }
-}
-
 .allContainer {
   position: sticky;
   top: 0;
