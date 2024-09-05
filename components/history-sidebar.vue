@@ -189,12 +189,12 @@ const emit = defineEmits(["sessionSelected"]);
 function selectSession(errCode, errMessage, cause) {
   emit("sessionSelected", errCode, errMessage, cause);
 }
-const windowWidth = ref(screen.width);
+const windowWidth = ref(window.innerWidth);
 const sidebar_visible = ref(true);
 const sidebar_auto_hidden = ref(false);
 
 const handleResize = () => {
-  windowWidth.value = screen.width;
+  windowWidth.value = window.innerWidth;
   if (windowWidth.value < 920 && sidebar_visible.value) {
     sidebar_visible.value = false;
     sidebar_auto_hidden.value = true;
