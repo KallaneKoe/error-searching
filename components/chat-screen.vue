@@ -466,6 +466,14 @@ const scrollToBottom = () => {
 </script>
 
 <style>
+@media (max-width: 920px) {
+  .history-sidebar {
+    z-index: 1000;
+    position: fixed;
+    display: block;
+  }
+}
+
 .mainscreen {
   height: 100vh;
   background-color: #bec7a5;
