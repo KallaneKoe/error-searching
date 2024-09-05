@@ -244,6 +244,12 @@ const sortedSessionsByPopular = computed(() => {
 </script>
 
 <style>
+@media (max-width: 920px) {
+  .allContainer {
+    z-index: 1000;
+  }
+}
+
 .allContainer {
   position: sticky;
   top: 0;
