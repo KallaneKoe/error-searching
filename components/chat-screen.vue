@@ -466,14 +466,6 @@ const scrollToBottom = () => {
 </script>
 
 <style>
-@media (max-width: 920px) {
-  .history-sidebar {
-    z-index: 1000;
-    position: fixed;
-    display: block;
-  }
-}
-
 .mainscreen {
   height: 100vh;
   background-color: #bec7a5;
@@ -665,4 +657,28 @@ pre {
   padding-bottom: unset;
   margin-top: unset;
 }
+/* 
+@media (max-width: 920px) {
+  .mainscreen {
+    flex-direction: column;
+  }
+  .history-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    z-index: 100;
+    background-color: #f4f4f4;
+  }
+
+  .chatscreen {
+    flex-grow: 1;
+    padding-top: 20px;
+    overflow-y: auto;
+    height: 100vh;
+    z-index: 1;
+    position: relative;
+  }
+} */
 </style>

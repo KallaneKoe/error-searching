@@ -255,11 +255,11 @@ const sortedSessionsByPopular = computed(() => {
 .styledContainer {
   height: 100vh;
   min-width: 10vw;
-  max-width: 20vw;
+  max-width: 50vw;
   position: sticky;
   top: 0;
   bottom: 0;
-  width: 200vw;
+  width: 20vw;
   border-right: 2px solid black;
   ::-webkit-scrollbar {
     display: none;
@@ -347,10 +347,12 @@ svg {
 li {
   overflow-x: auto;
 }
-
-ul {
-}
-
-.closedSidebar {
+@media (max-width: 920px) {
+  .styledContainer {
+    width: 50vw;
+  }
+  .allContainer {
+    z-index: 1000;
+  }
 }
 </style>
