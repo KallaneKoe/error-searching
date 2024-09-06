@@ -282,7 +282,7 @@ li {
 }
 @media (max-width: 920px) {
   .styledContainer {
-    width: 50vw;
+    width: 70vw;
   }
   .allContainer {
     z-index: 1000;
