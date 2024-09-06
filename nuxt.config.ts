@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     "@": resolve(__dirname, "/"),
   },
 
-  css: ["~/assets/main.css"],
+  css: ["~/assets/main.css", "@fortawesome/fontawesome-free/css/all.min.css"],
 
   postcss: {
     plugins: {

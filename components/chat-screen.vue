@@ -104,18 +104,7 @@
           />
         </div>
         <button class="input_button" @click="search(newMessage, true)">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            viewBox="0 0 32 32"
-            class="text-4xl text-black"
-          >
-            <path
-              fill="currentColor"
-              d="m29.919 6.163l-4.225 19.925c-.319 1.406-1.15 1.756-2.331 1.094l-6.438-4.744l-3.106 2.988c-.344.344-.631.631-1.294.631l.463-6.556L24.919 8.72c.519-.462-.113-.719-.806-.256l-14.75 9.288l-6.35-1.988c-1.381-.431-1.406-1.381.288-2.044l24.837-9.569c1.15-.431 2.156.256 1.781 2.013z"
-            />
-          </svg>
+          <i class="fas fa-paper-plane"></i>
         </button>
       </div>
     </div>
@@ -516,17 +505,24 @@ const scrollToBottom = () => {
 }
 
 .input_button {
-  border-radius: 100%;
-  background-color: #d0f860;
-  padding: 0px 0px 0px 2px;
+  background-color: #566246;
+  border: 2px black solid;
+  color: white;
+  padding: 10px;
   margin: 8px;
-  border: 2px solid black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 50%;
   width: 50px;
   height: 50px;
-  position: sticky;
-  align-self: self-end;
+  cursor: pointer;
 }
 
+.send-button i {
+  font-size: 20px;
+}
 .list {
   flex: 1;
   display: absolute;
@@ -657,15 +653,11 @@ pre {
   padding-bottom: unset;
   margin-top: unset;
 }
-/* 
 @media (max-width: 920px) {
   .mainscreen {
     flex-direction: column;
   }
   .history-sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 250px;
     height: 100vh;
     z-index: 100;
@@ -678,7 +670,10 @@ pre {
     overflow-y: auto;
     height: 100vh;
     z-index: 1;
-    position: relative;
+    position: absolute;
   }
-} */
+  .input {
+    position: fixed;
+  }
+}
 </style>

@@ -2,46 +2,12 @@
   <div class="allContainer">
     <div v-if="sidebar_visible === true" class="styledContainer">
       <div class="styledHeader">
-        <button title="Save and Open a new chat" @click="clearAllChats()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            viewBox="0 0 32 32"
-          >
-            <defs>
-              <path
-                id="carbonNewTab0"
-                fill="currentColor"
-                d="M26 26H6V6h10V4H6a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2V16h-2Z"
-              />
-            </defs>
-            <use href="#carbonNewTab0" />
-            <use href="#carbonNewTab0" />
-            <path fill="currentColor" d="M26 6V2h-2v4h-4v2h4v4h2V8h4V6z" />
-          </svg>
+        <button title="Open a new chat" @click="clearAllChats()">
+          <i class="fa-regular fa-square-plus"></i>
         </button>
         <h3 class="styledH3">Lịch sử Chat</h3>
         <button title="Close Sidebar" @click="toggleSidebar()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            viewBox="0 0 24 24"
-          >
-            <g
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.5"
-            >
-              <path d="M9 3.5v17m7-5.5l-3-3l3-3" />
-              <path
-                d="M3 9.4c0-2.24 0-3.36.436-4.216a4 4 0 0 1 1.748-1.748C6.04 3 7.16 3 9.4 3h5.2c2.24 0 3.36 0 4.216.436a4 4 0 0 1 1.748 1.748C21 6.04 21 7.16 21 9.4v5.2c0 2.24 0 3.36-.436 4.216a4 4 0 0 1-1.748 1.748C17.96 21 16.84 21 14.6 21H9.4c-2.24 0-3.36 0-4.216-.436a4 4 0 0 1-1.748-1.748C3 17.96 3 16.84 3 14.6z"
-              />
-            </g>
-          </svg>
+          <i class="fa-regular fa-square-caret-left"></i>
         </button>
       </div>
       <div></div>
@@ -119,26 +85,7 @@
           @click="toggleSidebar()"
           class="styledButton"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            viewBox="0 0 24 24"
-            class="font-bold text-5xl mx-2"
-          >
-            <g
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.5"
-            >
-              <path d="M15 3.5v17M8 9l3 3l-3 3" />
-              <path
-                d="M3 9.4c0-2.24 0-3.36.436-4.216a4 4 0 0 1 1.748-1.748C6.04 3 7.16 3 9.4 3h5.2c2.24 0 3.36 0 4.216.436a4 4 0 0 1 1.748 1.748C21 6.04 21 7.16 21 9.4v5.2c0 2.24 0 3.36-.436 4.216a4 4 0 0 1-1.748 1.748C17.96 21 16.84 21 14.6 21H9.4c-2.24 0-3.36 0-4.216-.436a4 4 0 0 1-1.748-1.748C3 17.96 3 16.84 3 14.6z"
-              />
-            </g>
-          </svg>
+          <i class="fa-regular fa-square-caret-right"></i>
         </button>
         <button
           title="Save and Open a new chat"
@@ -146,24 +93,7 @@
           class="styledButton"
           className="border-l-2 border-black"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            viewBox="0 0 32 32"
-            class="font-bold text-5xl ml-2"
-          >
-            <defs>
-              <path
-                id="carbonNewTab0"
-                fill="currentColor"
-                d="M26 26H6V6h10V4H6a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2V16h-2Z"
-              />
-            </defs>
-            <use href="#carbonNewTab0" />
-            <use href="#carbonNewTab0" />
-            <path fill="currentColor" d="M26 6V2h-2v4h-4v2h4v4h2V8h4V6z" />
-          </svg>
+          <i class="fa-regular fa-square-plus"></i>
         </button>
       </div>
     </div>
@@ -354,5 +284,11 @@ li {
   .allContainer {
     z-index: 1000;
   }
+}
+i {
+  font-size: 30px;
+  margin-left: 5px;
+  margin-right: 5px;
+  color: black;
 }
 </style>
