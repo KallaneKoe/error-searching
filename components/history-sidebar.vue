@@ -2,11 +2,19 @@
   <div class="allContainer">
     <div v-if="sidebar_visible === true" class="styledContainer">
       <div class="styledHeader">
-        <button title="Open a new chat" @click="clearAllChats()">
+        <button
+          title="Open a new chat"
+          @click="clearAllChats()"
+          class="sidebar_button"
+        >
           <i class="fa-regular fa-square-plus"></i>
         </button>
         <h3 class="styledH3">Lịch sử Chat</h3>
-        <button title="Close Sidebar" @click="toggleSidebar()">
+        <button
+          title="Close Sidebar"
+          @click="toggleSidebar()"
+          class="sidebar_button"
+        >
           <i class="fa-regular fa-square-caret-left"></i>
         </button>
       </div>
@@ -83,14 +91,14 @@
         <button
           title="Open Sidebar"
           @click="toggleSidebar()"
-          class="styledButton"
+          class="styledButton sidebar_button"
         >
           <i class="fa-regular fa-square-caret-right"></i>
         </button>
         <button
           title="Save and Open a new chat"
           @click="clearAllChats()"
-          class="styledButton"
+          class="styledButton sidebar_button"
           className="border-l-2 border-black"
         >
           <i class="fa-regular fa-square-plus"></i>
@@ -285,7 +293,7 @@ li {
     z-index: 1000;
   }
 }
-i {
+.sidebar_button i {
   font-size: 30px;
   margin-left: 5px;
   margin-right: 5px;

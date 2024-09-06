@@ -507,7 +507,7 @@ const scrollToBottom = () => {
 .input_button {
   background-color: #566246;
   border: 2px black solid;
-  color: white;
+
   padding: 10px;
   margin: 8px;
   text-align: center;
@@ -519,10 +519,10 @@ const scrollToBottom = () => {
   height: 50px;
   cursor: pointer;
 }
-
-.send-button i {
-  font-size: 20px;
+.input_button i {
+  color: white;
 }
+
 .list {
   flex: 1;
   display: absolute;
