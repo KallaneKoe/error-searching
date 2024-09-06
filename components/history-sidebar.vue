@@ -91,15 +91,14 @@
         <button
           title="Open Sidebar"
           @click="toggleSidebar()"
-          class="styledButton sidebar_button"
+          class="sidebar_button"
         >
           <i class="fa-regular fa-square-caret-right"></i>
         </button>
         <button
           title="Save and Open a new chat"
           @click="clearAllChats()"
-          class="styledButton sidebar_button"
-          className="border-l-2 border-black"
+          class="sidebar_button"
         >
           <i class="fa-regular fa-square-plus"></i>
         </button>
@@ -264,10 +263,6 @@ svg {
   padding: 10px;
   border-radius: 850px;
   border: 2px solid black;
-}
-
-.styledButton {
-  flex: 1;
 }
 
 .text {

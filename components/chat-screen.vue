@@ -505,7 +505,7 @@ const scrollToBottom = () => {
 }
 
 .input_button {
-  background-color: #566246;
+  background-color: white;
   border: 2px black solid;
 
   padding: 10px;
@@ -520,7 +520,8 @@ const scrollToBottom = () => {
   cursor: pointer;
 }
 .input_button i {
-  color: white;
+  color: black;
+  font-weight: bold;
 }
 
 .list {
