@@ -24,7 +24,7 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "nuxt-server-utils",
     "@nuxt/ui",
-    "vue3-carousel-nuxt",
+
     "nuxt-swiper",
   ],
   runtimeConfig: {

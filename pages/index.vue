@@ -1,9 +1,10 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="main-screen">
+  <div>
     <!-- <Header className="fixed bg-slate-50 w-[100vw] " /> -->
-    <ChatScreen class="chat-screen" />
+    <!-- <file-input-header /> -->
+    <ChatScreen />
   </div>
 </template>
 

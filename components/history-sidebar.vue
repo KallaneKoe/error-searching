@@ -22,11 +22,7 @@
       <div class="text">Mã lỗi người dùng tìm nhiều nhất</div>
       <div class="StyledChatList">
         <ul>
-          <li
-            v-for="session in sortedSessionsByPopular"
-            :key="session.id"
-            class="list"
-          >
+          <li v-for="session in sortedSessionsByPopular" class="history-list">
             <button
               @click="
                 selectSession(
@@ -55,11 +51,7 @@
       <div class="text">Mã lỗi người dùng tìm gần đây nhất</div>
       <div class="StyledChatList">
         <ul>
-          <li
-            v-for="session in sortedSessionsByDate"
-            :key="session.id"
-            class="list"
-          >
+          <li v-for="session in sortedSessionsByDate" class="history-list">
             <button
               @click="
                 selectSession(
@@ -110,7 +102,6 @@
 <script lang="js" setup>
 import { inject, onMounted } from "vue";
 
-import { defineProps, defineEmits } from "vue";
 import { ref, watch, computed } from "vue";
 
 const props = defineProps({
@@ -166,19 +157,35 @@ function parseCustomDate(dateString) {
   return new Date(year, month - 1, day, hour, minute, second);
 }
 
-const sortedSessionsByDate = computed(() => {
-  console.log("sortedSessionsByDate recomputed");
-  return [...props.sessions].sort((a, b) => {
-    return parseCustomDate(b.date) - parseCustomDate(a.date);
-  });
-});
+// const sortedSessionsByDate = computed(() => {
+//   console.log("sortedSessionsByDate recomputed");
+//   return [...props.sessions].sort((a, b) => {
+//     return parseCustomDate(b.date) - parseCustomDate(a.date);
+//   });
+// });
 
-const sortedSessionsByPopular = computed(() => {
-  console.log("sortedSessionsByPopular recomputed");
-  return [...props.sessions].sort((a, b) => {
-    return b.numberOfSearch - a.numberOfSearch;
-  });
-});
+// const sortedSessionsByPopular = computed(() => {
+//   console.log("sortedSessionsByPopular recomputed");
+//   return [...props.sessions].sort((a, b) => {
+//     return b.numberOfSearch - a.numberOfSearch;
+//   });
+// });
+
+const sortedSessionsByDate = ref([]);
+const sortedSessionsByPopular = ref([]);
+
+watch(
+  () => props.sessions,
+  (newSessions) => {
+    sortedSessionsByDate.value = [...newSessions].sort((a, b) => {
+      return parseCustomDate(b.date) - parseCustomDate(a.date);
+    });
+    sortedSessionsByPopular.value = [...newSessions].sort((a, b) => {
+      return b.numberOfSearch - a.numberOfSearch;
+    });
+  },
+  { deep: true, immediate: true }
+);
 </script>
 
 <style>
@@ -280,9 +287,12 @@ svg {
 li {
   overflow-x: auto;
 }
+.history-list {
+  display: contents;
+}
 @media (max-width: 920px) {
   .styledContainer {
-    width: 70vw;
+    width: 50vw;
   }
   .allContainer {
     z-index: 1000;
@@ -293,5 +303,13 @@ li {
   margin-left: 5px;
   margin-right: 5px;
   color: black;
+}
+@media (max-width: 768px) {
+  .styledContainer {
+    width: 70vw;
+  }
+  .allContainer {
+    z-index: 1000;
+  }
 }
 </style>
