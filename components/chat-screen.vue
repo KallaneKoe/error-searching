@@ -1,7 +1,12 @@
 <template>
+  <!-- <div class="header" v-if="!isLoading" :data="sharedVisible">
+    <p>ABCDEF</p>
+  </div> -->
+  <Header v-if="!isLoading" />
   <div v-if="isLoading">
     <div class="loader"></div>
   </div>
+
   <div v-else class="mainscreen" ref="scrollContainer">
     <HistorySidebar
       class="history-sidebar"
@@ -170,6 +175,40 @@ onMounted(() => {
 
   scrollToBottom();
 });
+
+const windowWidth = ref(window.innerWidth);
+
+onMounted(() => {
+  window.addEventListener("resize", handleResize);
+  handleResize();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", handleResize);
+});
+
+const sidebar_visible = ref(true);
+const sidebar_auto_hidden = ref(false);
+
+const handleResize = () => {
+  windowWidth.value = window.innerWidth;
+  if (windowWidth.value < 920 && sidebar_visible.value) {
+    sidebar_visible.value = false;
+    sidebar_auto_hidden.value = true;
+  } else if (windowWidth.value >= 920 && sidebar_auto_hidden.value) {
+    sidebar_visible.value = true;
+    sidebar_auto_hidden.value = false;
+  }
+};
+
+const toggleSidebar = () => {
+  sidebar_auto_hidden.value = false;
+  sidebar_visible.value = !sidebar_visible.value;
+};
+
+provide("toggleSidebar", toggleSidebar);
+provide("sidebar_visible", sidebar_visible);
+provide("sidebar_auto_hidden", sidebar_auto_hidden);
 
 const clearChat = () => {
   messages.value = [];
@@ -455,6 +494,18 @@ const scrollToBottom = () => {
 </script>
 
 <style>
+/* .header {
+  width: 100vw;
+  height: 50px;
+  position: fixed;
+  background-color: white;
+  border-bottom: 2px black solid;
+  color: black;
+} */
+.chat-bubble:first-child {
+  margin-top: 90px;
+}
+
 .mainscreen {
   height: 100vh;
   background-color: #bec7a5;

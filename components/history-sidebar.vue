@@ -12,7 +12,7 @@
         <h3 class="styledH3">Lịch sử Chat</h3>
         <button
           title="Close Sidebar"
-          @click="toggleSidebar()"
+          @click="toggleSidebar"
           class="sidebar_button"
         >
           <i class="fa-regular fa-square-caret-left"></i>
@@ -78,24 +78,6 @@
         </ul>
       </div>
     </div>
-    <div class="closedSidebar">
-      <div v-if="sidebar_visible === false" class="styledButtonContainers">
-        <button
-          title="Open Sidebar"
-          @click="toggleSidebar()"
-          class="sidebar_button"
-        >
-          <i class="fa-regular fa-square-caret-right"></i>
-        </button>
-        <button
-          title="Save and Open a new chat"
-          @click="clearAllChats()"
-          class="sidebar_button"
-        >
-          <i class="fa-regular fa-square-plus"></i>
-        </button>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -112,39 +94,17 @@ defineOptions({
   inheritAttrs: false,
 });
 
-const emit = defineEmits(["sessionSelected"]);
+const emit = defineEmits(["sessionSelected", "change_visible"]);
 
 function selectSession(errCode, errMessage, cause) {
   emit("sessionSelected", errCode, errMessage, cause);
 }
-const windowWidth = ref(window.innerWidth);
-
-const sidebar_visible = ref(false);
-const sidebar_auto_hidden = ref(false);
-
-const handleResize = () => {
-  windowWidth.value = window.innerWidth;
-  if (windowWidth.value < 920 && sidebar_visible.value) {
-    sidebar_visible.value = false;
-    sidebar_auto_hidden.value = true;
-  } else if (windowWidth.value >= 920 && sidebar_auto_hidden.value) {
-    sidebar_visible.value = true;
-    sidebar_auto_hidden.value = false;
-  }
-};
-
-const toggleSidebar = () => {
-  sidebar_auto_hidden.value = false;
-  sidebar_visible.value = !sidebar_visible.value;
-};
-
-window.addEventListener("resize", handleResize);
-
-onUnmounted(() => {
-  window.removeEventListener("resize", handleResize);
-});
 
 const clearChat = inject("clearChat");
+
+let sidebar_visible = inject("sidebar_visible");
+let sidebar_auto_hidden = inject("sidebar_auto_hidden");
+const toggleSidebar = inject("toggleSidebar");
 
 const clearAllChats = () => {
   clearChat();
@@ -156,20 +116,6 @@ function parseCustomDate(dateString) {
     .map(Number);
   return new Date(year, month - 1, day, hour, minute, second);
 }
-
-// const sortedSessionsByDate = computed(() => {
-//   console.log("sortedSessionsByDate recomputed");
-//   return [...props.sessions].sort((a, b) => {
-//     return parseCustomDate(b.date) - parseCustomDate(a.date);
-//   });
-// });
-
-// const sortedSessionsByPopular = computed(() => {
-//   console.log("sortedSessionsByPopular recomputed");
-//   return [...props.sessions].sort((a, b) => {
-//     return b.numberOfSearch - a.numberOfSearch;
-//   });
-// });
 
 const sortedSessionsByDate = ref([]);
 const sortedSessionsByPopular = ref([]);
@@ -258,18 +204,6 @@ svg {
   padding-top: 2px;
   border-bottom: 2px solid black;
   overflow-x: hidden;
-}
-
-.styledButtonContainers {
-  position: fixed;
-  top: 8px;
-  left: 8px;
-  display: flex;
-  flex-direction: row;
-  background-color: white;
-  padding: 10px;
-  border-radius: 850px;
-  border: 2px solid black;
 }
 
 .text {
