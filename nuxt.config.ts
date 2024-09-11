@@ -32,4 +32,14 @@ export default defineNuxtConfig({
       apiBase: process.env.NUXT_PUBLIC_API_BASE,
     },
   },
+  app: {
+    head: {
+      link: [
+        {
+          rel: "search",
+          href: "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css",
+        },
+      ],
+    },
+  },
 });

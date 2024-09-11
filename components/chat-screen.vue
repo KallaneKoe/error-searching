@@ -13,6 +13,7 @@
       :sessions="sessions"
       @sessionSelected="selectSession"
     />
+
     <div class="chatscreen">
       <div className=" ">
         <div
@@ -192,10 +193,10 @@ const sidebar_auto_hidden = ref(false);
 
 const handleResize = () => {
   windowWidth.value = window.innerWidth;
-  if (windowWidth.value < 920 && sidebar_visible.value) {
+  if (windowWidth.value < 965 && sidebar_visible.value) {
     sidebar_visible.value = false;
     sidebar_auto_hidden.value = true;
-  } else if (windowWidth.value >= 920 && sidebar_auto_hidden.value) {
+  } else if (windowWidth.value >= 965 && sidebar_auto_hidden.value) {
     sidebar_visible.value = true;
     sidebar_auto_hidden.value = false;
   }
@@ -273,21 +274,6 @@ function selectSession(errCode, errMessage, cause) {
   filterByPlayer(currentSession.value.filteringArray[1], false);
 
   filteredByProperties(currentSession.value.filteringArray[2], false);
-
-  // if (errCode !== "") {
-  //   console.log("Search By ErrCode");
-  //   console.log(errCode);
-  //   search(errCode, false);
-  // } else if (errMessage !== "") {
-  //   console.log("Search By ErrMessage");
-
-  //   console.log(errMessage);
-  //   search(errMessage, false);
-  // } else {
-  //   console.log("Search By Cause");
-  //   console.log(cause);
-  //   search(cause, false);
-  // }
 
   if (searchProperties === "ErrCode") {
     search(errCode, false);
@@ -487,23 +473,21 @@ const sendMessage = (userMessage, botMessage) => {
 const scrollContainer = ref(null);
 
 const scrollToBottom = () => {
-  if (scrollContainer.value) {
-    scrollContainer.value.scrollTop = scrollContainer.value.scrollHeight;
+  // if (scrollContainer.value) {
+  //   scrollContainer.value.scrollTop = scrollContainer.value.scrollHeight;
+  // }
+  const lastMessage = scrollContainer.value?.querySelector(
+    ".options:last-child"
+  );
+  if (lastMessage) {
+    lastMessage.scrollIntoView({ behavior: "smooth" });
   }
 };
 </script>
 
 <style>
-/* .header {
-  width: 100vw;
-  height: 50px;
-  position: fixed;
-  background-color: white;
-  border-bottom: 2px black solid;
-  color: black;
-} */
-.chat-bubble:first-child {
-  margin-top: 90px;
+.chatbubbles:nth-child(1) {
+  margin-top: 60px;
 }
 
 .mainscreen {
@@ -705,7 +689,7 @@ pre {
   padding-bottom: unset;
   margin-top: unset;
 }
-@media (max-width: 920px) {
+@media (max-width: 965px) {
   .mainscreen {
     flex-direction: column;
   }
@@ -722,10 +706,11 @@ pre {
     overflow-y: auto;
     height: 100vh;
     z-index: 1;
-    position: absolute;
+    position: relative;
   }
-  .input {
-    position: fixed;
+
+  .header-main {
+    width: 100vw;
   }
 }
 </style>

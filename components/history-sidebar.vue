@@ -1,84 +1,86 @@
 <template>
-  <div class="allContainer">
-    <div v-if="sidebar_visible === true" class="styledContainer">
-      <div class="styledHeader">
-        <button
-          title="Open a new chat"
-          @click="clearAllChats()"
-          class="sidebar_button"
-        >
-          <i class="fa-regular fa-square-plus"></i>
-        </button>
-        <h3 class="styledH3">Lịch sử Chat</h3>
-        <button
-          title="Close Sidebar"
-          @click="toggleSidebar"
-          class="sidebar_button"
-        >
-          <i class="fa-regular fa-square-caret-left"></i>
-        </button>
-      </div>
-      <div></div>
-      <div class="text">Mã lỗi người dùng tìm nhiều nhất</div>
-      <div class="StyledChatList">
-        <ul>
-          <li v-for="session in sortedSessionsByPopular" class="history-list">
-            <button
-              @click="
-                selectSession(
-                  session.errCode,
-                  session.errMessage,
-                  session.cause
-                )
-              "
-            >
-              <h4 class="styledChatSelect" v-if="session.errCode !== ''">
-                {{ session.errCode }}
-              </h4>
-              <h4
-                class="styledChatSelect"
-                v-else-if="session.errMessage !== ''"
+  <Transition name="slide-fade">
+    <div v-if="sidebar_visible" class="allContainer">
+      <div class="styledContainer">
+        <div class="styledHeader">
+          <button
+            title="Open a new chat"
+            @click="clearAllChats()"
+            class="sidebar_button"
+          >
+            <i class="fa-regular fa-square-plus"></i>
+          </button>
+          <h3 class="styledH3">Lịch sử Chat</h3>
+          <button
+            title="Close Sidebar"
+            @click="toggleSidebar"
+            class="sidebar_button"
+          >
+            <i class="fa-regular fa-square-caret-left"></i>
+          </button>
+        </div>
+        <div></div>
+        <div class="text">Mã lỗi người dùng tìm nhiều nhất</div>
+        <div class="StyledChatList">
+          <ul>
+            <li v-for="session in sortedSessionsByPopular" class="history-list">
+              <button
+                @click="
+                  selectSession(
+                    session.errCode,
+                    session.errMessage,
+                    session.cause
+                  )
+                "
               >
-                {{ session.errMessage }}
-              </h4>
-              <h4 class="styledChatSelect" v-else>
-                {{ session.cause }}
-              </h4>
-            </button>
-          </li>
-        </ul>
-      </div>
-      <div class="text">Mã lỗi người dùng tìm gần đây nhất</div>
-      <div class="StyledChatList">
-        <ul>
-          <li v-for="session in sortedSessionsByDate" class="history-list">
-            <button
-              @click="
-                selectSession(
-                  session.errCode,
-                  session.errMessage,
-                  session.cause
-                )
-              "
-            >
-              <h4 class="styledChatSelect" v-if="session.errCode !== ''">
-                {{ session.errCode }}
-              </h4>
-              <h4
-                class="styledChatSelect"
-                v-else-if="session.errMessage !== ''"
+                <h4 class="styledChatSelect" v-if="session.errCode !== ''">
+                  {{ session.errCode }}
+                </h4>
+                <h4
+                  class="styledChatSelect"
+                  v-else-if="session.errMessage !== ''"
+                >
+                  {{ session.errMessage }}
+                </h4>
+                <h4 class="styledChatSelect" v-else>
+                  {{ session.cause }}
+                </h4>
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="text">Mã lỗi người dùng tìm gần đây nhất</div>
+        <div class="StyledChatList">
+          <ul>
+            <li v-for="session in sortedSessionsByDate" class="history-list">
+              <button
+                @click="
+                  selectSession(
+                    session.errCode,
+                    session.errMessage,
+                    session.cause
+                  )
+                "
               >
-                {{ session.errMessage }}
-              </h4>
-              <h4 class="styledChatSelect" v-else>
-                {{ session.cause }}
-              </h4>
-            </button>
-          </li>
-        </ul>
+                <h4 class="styledChatSelect" v-if="session.errCode !== ''">
+                  {{ session.errCode }}
+                </h4>
+                <h4
+                  class="styledChatSelect"
+                  v-else-if="session.errMessage !== ''"
+                >
+                  {{ session.errMessage }}
+                </h4>
+                <h4 class="styledChatSelect" v-else>
+                  {{ session.cause }}
+                </h4>
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script lang="js" setup>
@@ -224,7 +226,7 @@ li {
 .history-list {
   display: contents;
 }
-@media (max-width: 920px) {
+@media (max-width: 965px) {
   .styledContainer {
     width: 50vw;
   }
@@ -245,5 +247,47 @@ li {
   .allContainer {
     z-index: 1000;
   }
+}
+.sidebar_button i {
+  font-size: 30px;
+  margin-left: 5px;
+  margin-right: 5px;
+  color: black;
+}
+
+.slide-fade-enter {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.slide-fade-enter-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-fade-enter-active {
+  transition:
+    transform 0.5s ease-out,
+    opacity 0.5s ease-out;
+}
+
+.slide-fade-leave {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.slide-fade-leave-active {
+  transition:
+    transform 0.5s ease-out,
+    opacity 0.5s ease-out;
+}
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  will-change: transform, opacity;
 }
 </style>
