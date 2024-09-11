@@ -226,6 +226,15 @@ li {
 .history-list {
   display: contents;
 }
+@media (max-width: 768px) {
+  .styledContainer {
+    width: 70vw;
+  }
+  .allContainer {
+    z-index: 1000;
+  }
+}
+
 @media (max-width: 965px) {
   .styledContainer {
     width: 50vw;
@@ -240,14 +249,7 @@ li {
   margin-right: 5px;
   color: black;
 }
-@media (max-width: 768px) {
-  .styledContainer {
-    width: 70vw;
-  }
-  .allContainer {
-    z-index: 1000;
-  }
-}
+
 .sidebar_button i {
   font-size: 30px;
   margin-left: 5px;

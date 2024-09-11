@@ -701,16 +701,21 @@ pre {
   }
 
   .chatscreen {
-    flex-grow: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     padding-top: 20px;
     overflow-y: auto;
-    height: 100vh;
     z-index: 1;
-    position: relative;
   }
 
   .header-main {
     width: 100vw;
+  }
+  .mainscreen {
+    overflow: hidden;
   }
 }
 </style>
