@@ -255,39 +255,21 @@ li {
   color: black;
 }
 
-.slide-fade-enter {
-  opacity: 0;
-  transform: translateX(-100%);
-}
-
-.slide-fade-enter-to {
-  opacity: 1;
-  transform: translateX(0);
-}
-
 .slide-fade-enter-active {
-  transition:
-    transform 0.5s ease-out,
-    opacity 0.5s ease-out;
+  transition: opacity 0.5s ease;
 }
 
-.slide-fade-leave {
-  opacity: 1;
-  transform: translateX(0);
+.slide-fade-enter {
+  transition: opacity 0.5s ease;
 }
 
-.slide-fade-leave-to {
+.slide-fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.slide-fade-leave-to,
+.slide-fade-enter-from {
+  transform: translateX(0px);
   opacity: 0;
-  transform: translateX(-100%);
-}
-
-.slide-fade-leave-active {
-  transition:
-    transform 0.5s ease-out,
-    opacity 0.5s ease-out;
-}
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  will-change: transform, opacity;
 }
 </style>
