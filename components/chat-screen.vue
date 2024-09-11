@@ -631,7 +631,7 @@ const scrollToBottom = () => {
   height: fit-content;
   max-width: 70%;
   min-width: 30%;
-  padding: 15px 15px 15px;
+  padding: 15px 15px 5px;
 
   margin: 10px;
   position: relative;
@@ -692,6 +692,9 @@ pre {
 @media (max-width: 965px) {
   .mainscreen {
     flex-direction: column;
+  }
+  .chatbubbles:nth-child(1) {
+    margin-top: 38px;
   }
   .history-sidebar {
     width: 250px;
