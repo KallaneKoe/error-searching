@@ -487,7 +487,7 @@ const scrollToBottom = () => {
 
 <style>
 .chatbubbles:nth-child(1) {
-  margin-top: 60px;
+  margin-top: 50px;
 }
 
 .mainscreen {
