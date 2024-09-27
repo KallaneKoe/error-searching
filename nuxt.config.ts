@@ -3,13 +3,17 @@ import { defineNuxtConfig } from "nuxt/config";
 import { resolve } from "path";
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 
   alias: {
     "@": resolve(__dirname, "/"),
   },
 
-  css: ["~/assets/main.css", "@fortawesome/fontawesome-free/css/all.min.css"],
+  css: [
+    "~/assets/main.css",
+    "@fortawesome/fontawesome-free/css/all.min.css",
+    "animate.css/animate.min.css",
+  ],
 
   postcss: {
     plugins: {
@@ -24,8 +28,8 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "nuxt-server-utils",
     "@nuxt/ui",
-
     "nuxt-swiper",
+    "@pinia/nuxt",
   ],
   runtimeConfig: {
     public: {

@@ -2,7 +2,12 @@
   <div class="header">
     <div v-if="isLoading" class="loading">Uploading data, please wait...</div>
     <form>
-      <input ref="fileInput" type="file" class="file_input" @change="handleFileUpload">
+      <input
+        ref="fileInput"
+        type="file"
+        class="file_input"
+        @change="handleFileUpload"
+      />
     </form>
   </div>
 </template>
@@ -22,7 +27,6 @@ interface Response {
   Note: string;
   Platform: string;
 }
-
 
 const isLoading = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
